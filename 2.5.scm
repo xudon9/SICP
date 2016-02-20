@@ -1,0 +1,16 @@
+(define (cons a b)
+  (if (or (negative? a) (negative? b))
+    (error "Negative argument: CONS")
+    (* (expt 2 a) (expt 3 b))))
+
+(define (fact-count n fact)
+  (define (count-iter count quot)
+    (if (= (remainder quot fact) 0)
+      (count-iter (+ 1 count) (/ quot fact))
+      count))
+  (count-iter 0 n))
+
+(define (car n)
+  (fact-count n 2))
+(define (cdr n)
+  (fact-count n 3))
