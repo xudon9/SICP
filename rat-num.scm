@@ -35,3 +35,5 @@
   (display (numer x))
   (display "/")
   (display (denom x)))
+(define
+ (make-rat 2 3))
