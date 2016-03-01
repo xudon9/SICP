@@ -11,8 +11,10 @@
               nil
               sequence))
 
-(define (append seq1 seq2)
-  (fold-right cons seq2 seq1))
-
-(define (length sequence)
-  (fold-right (lambda (x y) (+ 1 y)) 0 sequence))
+(define (fold-left op initial sequence)
+  (define (iter result rest)
+    (if (null? rest)
+      result
+      (iter (op result (car rest))
+            (cdr rest))))
+  (iter initial sequence))
