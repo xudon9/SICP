@@ -1,8 +1,7 @@
 (define (deriv expr var)
   (cond ((number? expr) 0)
         ((variable? expr) (if (same-variable? expr var) 1 0))
-        ((sum? expr) (make-sum (deriv (addend expr) var)
-                               (deriv (augend expr) var)))
+        ((sum? expr) (make-sum (map (lambda (x) (deriv x var)) (cdr expr))))
         ((product? expr)
          (make-sum (make-product (multiplier expr)
                                  (deriv (multiplicand expr) var))
@@ -20,13 +19,17 @@
 
 (define (=number? expr num) (and (number? expr) (= expr num)))
 
-(define (make-sum a1 a2)
+(define (make-sum items)
+  (if (null? items)
+    0
+    (make-sum-pair (car items) (make-sum (cdr items)))))
+(define (make-sum-pair a1 a2)
   (cond ((=number? a1 0) a2)
         ((=number? a2 0) a1)
         ((and (number? a1) (number? a2)) (+ a1 a2))
         (else (list '+ a1 a2))))
 
-(define (make-product m1 m2)
+(define (make-product-pair m1 m2)
   (cond ((or (=number? m1 0) (=number? m2 0)) 0)
         ((=number? m1 1) m2)
         ((=number? m2 1) m1)
