@@ -4,7 +4,6 @@
         ((< x (car set)) false)
         (else (element-of-set? x (cdr set)))))
 
-
 (define (intersection-set set1 set2)
   (if (or (null? set1) (null? set2))
     '()
@@ -25,3 +24,8 @@
       (cond ((< x head) (cons x set))
             ((= x head) set)
             (else (cons head (adjoin-set x tail)))))))
+
+(define (list->tree xs)
+  (if (null? xs)
+    '()
+    (adjoin-set (car xs) (list->tree (cdr xs)))))
