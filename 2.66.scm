@@ -1,0 +1,12 @@
+(define (entry tree) (car tree))
+(define (left-branch tree) (cadr tree))
+(define (right-branch tree) (caddr tree))
+(define (make-tree entry left right) (list entry left right))
+
+(define (lookup key records)
+  (cond ((null? records) #f)
+        ((= x (key (entry records))) #t)
+        ((< x (key (entry records)))
+         (lookup x (left-branch records)))
+        ((> x (key (entry records)))
+         (lookup x (right-branch records)))))
