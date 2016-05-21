@@ -35,11 +35,11 @@
             (string-append (number->string (entry node))
                            "\n"
                            prefix
-                           "|-- "
-                           (node->string (string-append prefix "|   ") (left-branch node))
+                           "|--- "
+                           (node->string (string-append prefix "|    ") (left-branch node))
                            prefix
-                           "\\-- "
-                           (node->string (string-append prefix "    ") (right-branch node))))))
+                           "\\--- "
+                           (node->string (string-append prefix "     ") (right-branch node))))))
   (display (node->string "" tree)))
 
 (display-tree (list->tree (list 1)))
