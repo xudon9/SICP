@@ -1,0 +1,15 @@
+(load "huffman.scm")
+
+
+(define (encode-symbol symbol tree)
+  (if (leaf? tree)
+      '()
+      (let* ((l-branch (left-branch tree))
+             (r-branch (right-branch tree))
+             (l-symbols (symbols l-branch))
+             (r-symbols (symbols r-branch)))
+        (cond ((member symbol l-symbols)
+               (cons 0 (encode-symbol symbol l-branch)))
+              ((member symbol r-symbols)
+               (cons 1 (encode-symbol symbol r-branch)))
+              (else (list "Error"))))))
