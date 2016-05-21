@@ -45,8 +45,8 @@
         ((= bit 1) (right-branch branch))
         (else (error "bad bit: CHOOSE-BRANCH" bit))))
 
-;; x 是树(包括单个叶节点)，set 是树(包括单个叶节点)按权逆序排列的列表
-;; 此函数把 x 插入到 set 的适当位置，保持按权逆序排列的性质
+;; x 是树(包括单个叶节点)，set 是树(包括单个叶节点)按权升序排列的列表
+;; 此函数把 x 插入到 set 的适当位置，保持按权升序排列的性质
 (define (adjoin-set x set)
   (cond ((null? set)
          (list x))
@@ -55,7 +55,7 @@
         (else
           (cons (car set) (adjoin-set x (cdr set))))))
 
-;; 把一组形如的 ((A 4) (B 2) (C 1) (D 1)) 的表转换为 Huffman 树
+;; 把一组形如的 ((A 4) (B 2) (C 1) (D 1)) 的表转换为按权升序排列的表
 (define (make-leaf-set pairs)
   (if (null? pairs)
     '()
