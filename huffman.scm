@@ -55,7 +55,9 @@
         (else
           (cons (car set) (adjoin-set x (cdr set))))))
 
-;; 把一组形如的 ((A 4) (B 2) (C 1) (D 1)) 的表转换为按权升序排列的表
+;; 把的表转换为按权升序排列的叶子
+;; 例如: '((A 4) (B 8) (D 3) (E 1)) ~~>
+;;          ((leaf e 1) (leaf d 3) (leaf a 4) (leaf b 8))
 (define (make-leaf-set pairs)
   (if (null? pairs)
     '()

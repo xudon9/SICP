@@ -7,15 +7,20 @@
     (append (encode-symbol (car message) tree)
             (encode (cdr message) tree))))
 
+
 (define (encode-symbol symbol tree)
   (if (leaf? tree)
       '()
-      ;; TODO 为什么不能先用 let 把左右分支算出？？
-      (cond ((member symbol (symbols (left-branch tree)))
-             (cons 0 (encode-symbol symbol (left-branch tree))))
-            ((member symbol (symbols (right-branch tree)))
-             (cons 1 (encode-symbol symbol (right-branch tree))))
-            (else (error "This is not included in set" symbol)))))
+      (let* ((l-branch (left-branch tree))
+             (r-branch (right-branch tree))
+             (l-symbols (symbols l-branch))
+             (r-symbols (symbols r-branch)))
+       (cond ((member symbol l-symbols)
+              (cons 0 (encode-symbol symbol l-branch)))
+             ((member symbol r-symbols)
+              (cons 1 (encode-symbol symbol r-branch)))
+             (else (error "This is not included in set" symbol))))))
+
 
 ;;(display sample-message)
 ;;(newline)

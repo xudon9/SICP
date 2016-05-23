@@ -5,7 +5,7 @@
 
 (define (successive-merge pairs)
   (if (<= (length pairs) 1)
-    pairs
+    (car pairs) ;; 如果 pairs 为空表则崩溃（但是这不可能……）
     (let ((first (car pairs))
           (second (cadr pairs))
           (rest (cddr pairs)))
