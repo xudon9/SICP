@@ -104,4 +104,7 @@
 (define (put op type proc)
   (hash-table/put! *op-table* (list op type) proc))
 (define (get op type)
-  (hash-table/get *op-table* (list op type) #f)
+  (let ((f (hash-table/get *op-table* (list op type) #f)))
+   (if f
+     f
+     (error "No operation for" op type))))
