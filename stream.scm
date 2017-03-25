@@ -75,3 +75,9 @@
                  result)
           result))))
 
+;;;;;;;; Extra ;;;;;;;;
+(define (stream-take s n)
+  (if (= n 0)
+      '()
+      (cons (stream-car s)
+            (stream-take (stream-cdr s) (- n 1)))))
