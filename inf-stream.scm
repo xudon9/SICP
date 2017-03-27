@@ -32,11 +32,7 @@
 (define integers (cons-stream 1 (add-streams ones integers)))
 
 (define fibs
-  (cons-stream 0
-               (cons-stream 1
-                            (add-streams (stream-cdr fibs)
-                                         fibs))))
+  (cons-stream 0 (cons-stream 1 (add-streams (stream-cdr fibs) fibs))))
 
 (define (scale-stream stream factor)
-  (stream-map (lambda (x) (* x factor))
-              stream))
+  (stream-map (lambda (x) (* x factor)) stream))

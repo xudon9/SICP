@@ -20,10 +20,10 @@
 (define exp-series
   (cons-stream 1 (integrate-series exp-series)))
 
-;; 下面这两个还是有点问题。。
+;; 成功了
+;; </del>下面这两个还是有点问题。。</del>
 (define cosine-series
-  (cons-stream 1 (integrate-series sine-series)))
+  (cons-stream 1 (scale-stream (integrate-series sine-series) -1)))
 
 (define sine-series
-  (cons 0 (scale-stream (integrate-series cosine-series)
-                        -1)))
+  (cons-stream 0 (integrate-series cosine-series)))
