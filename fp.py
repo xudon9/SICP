@@ -1,27 +1,33 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-############ 未柯里化的函数 ###########
-def foldr(Func, zero, xs):
-    if Null(xs):
-        return zero
-    else:
-        return Func (Head(xs)) (Foldr (Func) (zero) (Tail(xs)))
-def cons(x, xs):
-    return [x] + xs
-################# Python 的匿名函数不支持多行真是＊了狗了 #################
-Head = lambda xs: xs[0]
-Tail = lambda xs: xs[1:]
-Null = lambda xs: len(xs) == 0
-Cons = lambda x : lambda xs: cons(x, xs)
-Nil  = []
-Id   = lambda x: x
-Square = lambda x: x * x
 
-Foldr = lambda F: lambda zero: lambda xs: foldr(F, zero, xs)
-Foldl = lambda F: lambda zero: lambda xs: Foldr (lambda x: lambda G: lambda A: G (F(A)(x))) (Id) (xs) (zero)
-Map   = lambda Proc: lambda xs: Foldr (lambda x: lambda ac: Cons(Proc(x))(ac)) (Nil) (xs)
-Filter = lambda Pred: lambda xs: Foldr (lambda x: lambda ac: Cons(x)(ac) if Pred(x) else ac) (Nil) (xs)
+cons = lambda x: lambda y: lambda isCar: x if isCar else y
+car = lambda node: node(True)
+cdr = lambda node: node(False)
 
-print "1 ==>\t",  Map    (Square)                       ([1,2,3,4,5])
-print "2 ==>\t",  Foldl  (lambda a: lambda b: a/b) (60) ([3, 5, 0.5])
-print "3 ==>\t",  Foldr  (lambda a: lambda b: a/b) (60) ([3, 5, 0.5])
-print "4 ==>\t",  Filter (lambda x: x % 3 == 0)         ([1,2,3,4,5,6,7,8,9])
+null = lambda obj: obj == None
+number = lambda obj: isinstance(obj, (int, float, complex))
+
+id = lambda x: x
+
+foldr = lambda f: lambda zero: lambda xs:\
+        zero if null(xs) else f (car(xs)) (foldr (f) (zero) (cdr(xs)))
+foldl = lambda f: lambda zero: lambda xs:\
+        foldr (lambda x: lambda g: lambda a: g (f(a)(x))) (id) (xs) (zero)
+
+display = lambda xs: print() if null(xs) else\
+          (print(car(xs), end=' '), display(cdr(xs)))
+
+map = lambda proc: lambda xs:\
+        foldr (lambda x: lambda ac: cons(proc(x))(ac)) (None) (xs)
+filter = lambda pred: lambda xs:\
+         foldr (lambda x: lambda ac:\
+                cons(x)(ac) if pred(x) else ac) (None) (xs)
+
+range = lambda a: lambda b: None if a > b else cons(a)(range(a + 1)(b))
+
+#display (map (lambda x: x * x) (range(1)(10)))
+#print(foldr (lambda a: lambda b: a - b) (0) (range(1)(3)))
+
+sum = lambda xs: foldr (lambda a: lambda b: a + b) (0) (xs)
+print(sum(map (lambda x: x * x) (range(1)(3))))
