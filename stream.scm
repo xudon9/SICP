@@ -77,7 +77,10 @@
 
 ;;;;;;;; Extra ;;;;;;;;
 (define (stream-take s n)
-  (if (= n 0)
+  (if (or (= n 0) (stream-null? s))
       '()
       (cons (stream-car s)
             (stream-take (stream-cdr s) (- n 1)))))
+
+(define (peek-stream s)
+  (stream-take s 25))
