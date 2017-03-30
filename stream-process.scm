@@ -7,18 +7,24 @@
 ;;       (cons-stream (proc (stream-car s))
 ;;                    (stream-map proc (stream-cdr s)))))
 
+(define (average x y) (/ (+ x y) 2))
 
 (define (sqrt-improve guess x)
   (average guess (/ x guess)))
 
+(define (sqrt-stream x)
+  (define guess
+    (cons-stream 1.0
+                 (stream-map (lambda (g) (sqrt-improve g x))
+                             guess)))
+  guess)
+
 (define (pi-summands n)
-  (cons-stream
-   (/ 1.0 n)
-   (stream-map - (pi-summands (+ n 2)))))
+  (cons-stream (/ 1.0 n)
+               (stream-map - (pi-summands (+ n 2)))))
 
 (define pi-stream
-  (scale-stream
-   (partial-sums (pi-summands 1)) 4))
+  (scale-stream (partial-sums (pi-summands 1)) 4))
 
 (define (euler-transform s)
   (let ((s0 (stream-ref s 0))    ; Sₙ₋₁
