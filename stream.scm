@@ -1,12 +1,12 @@
 (define-syntax cons-stream
   (syntax-rules ()
-    ((cons-stream a b)
-     (cons a (memo-proc (lambda () b))))))
+                ((cons-stream a b)
+                 (cons a (memo-proc (lambda () b))))))
 
 (define-syntax delay
   (syntax-rules ()
-    ((delay exp)
-     (memo-proc (lambda () exp)))))
+                ((delay exp)
+                 (memo-proc (lambda () exp)))))
 
 (define false #f)
 (define true #t)
@@ -15,8 +15,8 @@
 
 (define (stream-ref s n)
   (if (= n 0)
-      (stream-car s)
-      (stream-ref (stream-cdr s) (- n 1))))
+    (stream-car s)
+    (stream-ref (stream-cdr s) (- n 1))))
 
 (define (stream-map proc s)
   (if (stream-null? s)
@@ -27,11 +27,11 @@
 
 (define (stream-for-each proc s)
   (if (stream-null? s)
-      'done
-      (begin
-        (proc (stream-car s))
-        (stream-for-each proc
-                         (stream-cdr s)))))
+    'done
+    (begin
+      (proc (stream-car s))
+      (stream-for-each proc
+                       (stream-cdr s)))))
 
 (define (display-stream s)
   (stream-for-each display-line s))
@@ -49,38 +49,38 @@
 
 (define (stream-enumerate-interval low high)
   (if (> low high)
-      the-empty-stream
-      (cons-stream low
-		   (stream-enumerate-interval (+ low 1) high))))
+    the-empty-stream
+    (cons-stream low
+                 (stream-enumerate-interval (+ low 1) high))))
 
 (define (stream-filter pred stream)
   (cond ((stream-null? stream) 
          the-empty-stream)
         ((pred (stream-car stream))
          (cons-stream 
-          (stream-car stream)
-          (stream-filter 
-           pred
-           (stream-cdr stream))))
+           (stream-car stream)
+           (stream-filter 
+             pred
+             (stream-cdr stream))))
         (else (stream-filter 
-               pred 
-               (stream-cdr stream)))))
+                pred 
+                (stream-cdr stream)))))
 
 (define (memo-proc proc)
   (let ((already-run? false) (result false))
-    (lambda ()
-      (if (not already-run?)
-          (begin (set! result (proc))
-                 (set! already-run? true)
-                 result)
-          result))))
+   (lambda ()
+     (if (not already-run?)
+       (begin (set! result (proc))
+              (set! already-run? true)
+              result)
+       result))))
 
 ;;;;;;;; Extra ;;;;;;;;
 (define (stream-take s n)
   (if (or (= n 0) (stream-null? s))
-      '()
-      (cons (stream-car s)
-            (stream-take (stream-cdr s) (- n 1)))))
+    '()
+    (cons (stream-car s)
+          (stream-take (stream-cdr s) (- n 1)))))
 
 (define (peek-stream s)
   (stream-take s 25))
